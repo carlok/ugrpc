@@ -1,0 +1,4 @@
+grpcio==1.50.0
+grpcio-tools==1.50.0
+msgpack==1.0.4
+numpy==1.23.4

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package unary;
+
+service Unary{
+ rpc GetServerResponse(Message) returns (MessageResponse) {}
+}
+
+message Message{
+ bytes message = 1;
+}
+
+message MessageResponse{
+ string status = 1;
+ bytes image = 2;
+}

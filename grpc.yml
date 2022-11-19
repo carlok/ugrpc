@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  anonymizer:
+    command: >
+      /bin/sh -c "
+        sleep 1;
+        python3 -u server.py
+      "
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    expose:
+      - '50051'
+    volumes:
+      - ./server/:/app/
+      - ./mlib/:/app/mlib/
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    networks:
+      - backend
+
+  grpc_client:
+    command: >
+      /bin/sh -c "
+        sleep 5;
+        python3 -u client.py
+      "
+    build:
+      context: ./client/
+      dockerfile: Dockerfile
+    volumes:
+      - ./client/:/app/
+      - ./mlib/:/app/mlib/
+    restart: unless-stopped
+    depends_on:
+      - anonymizer
+    security_opt:
+      - seccomp:unconfined
+    networks:
+      - backend
+
+networks:
+  backend:
